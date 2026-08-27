@@ -1,6 +1,13 @@
-# Stack Tecnologico
+# UNQ - PDES - 2026 - Cuatri 2
+## Aplicación Compra tu viaje
 
-- Ract 
-- vite 
+## STACK TECNOLOGICO
+
 - JavaScript
-- ?
+- React
+- Vite
+
+---
+
+## Ejecución
+
