@@ -1,5 +1,7 @@
 # 2026c2-pdes-grupo-nro-
 
+---
+
 ### Diagrama de Entidad de Relación
 
 ```mermaid
@@ -16,8 +18,7 @@ erDiagram
     HOTEL ||--o{ PAQUETE : "incluye"
 
     AEROLINEA ||--o{ VUELO : "publica"
-    PAQUETE }o--|| VUELO : "vuelo ida"
-    PAQUETE }o--|| VUELO : "vuelo vuelta"
+    PAQUETE }o--|| VUELO : "contiene"
 
 
     USUARIO {
@@ -89,6 +90,7 @@ erDiagram
         int disponibilidad
     }
 ```
+---
 
 ### Integrantes
 
