@@ -1,0 +1,1 @@
+// Flight API database schema

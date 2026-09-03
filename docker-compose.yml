@@ -1,0 +1,94 @@
+services:
+
+  # =========================
+  # CTV DATABASE
+  # =========================
+
+  ctv-postgres:
+    image: postgres:18-alpine
+    container_name: ctv-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - ctv_postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # =========================
+  # CTV BACKEND
+  # =========================
+
+  ctv-backend:
+    build:
+      context: ./backend
+    container_name: ctv-backend
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DB_HOST: ctv-postgres
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      ctv-postgres:
+        condition: service_healthy
+
+  # =========================
+  # FLIGHTS DATABASE
+  # =========================
+
+  flights-postgres:
+    image: postgres:18-alpine
+    container_name: flights-postgres
+    environment:
+      POSTGRES_DB: ${FLIGHTS_POSTGRES_DB}
+      POSTGRES_USER: ${FLIGHTS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${FLIGHTS_POSTGRES_PASSWORD}
+    ports:
+      - "${FLIGHTS_POSTGRES_PORT}:5432"
+    volumes:
+      - flights_postgres_data:/var/lib/postgresql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${FLIGHTS_POSTGRES_USER} -d ${FLIGHTS_POSTGRES_DB}"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # =========================
+  # FLIGHT API
+  # =========================
+
+  flights-api:
+    build:
+      context: ./flight-api
+    container_name: flights-api
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: 3001
+      DB_HOST: flights-postgres
+      DB_PORT: 5432
+      DB_NAME: ${FLIGHTS_POSTGRES_DB}
+      DB_USER: ${FLIGHTS_POSTGRES_USER}
+      DB_PASSWORD: ${FLIGHTS_POSTGRES_PASSWORD}
+    depends_on:
+      flights-postgres:
+        condition: service_healthy
+
+
+volumes:
+  ctv_postgres_data:
+  flights_postgres_data:
