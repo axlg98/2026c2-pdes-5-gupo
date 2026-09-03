@@ -1,7 +1,6 @@
 {
-  "name": "backend",
+  "name": "flight-api",
   "version": "1.0.0",
-  "description": "- Node Js - JavaScript - ?",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -10,6 +9,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
   "type": "module",
   "dependencies": {
     "drizzle-orm": "^0.45.2",
